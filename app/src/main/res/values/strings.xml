@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Track</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pref_key_tracking">tracking</string>
+    <string name="title_tracking">Background tracking</string>
+    <string name="summary_tracking">The app will track your location in the background</string>
+    <string name="pref_key_smart_tracking">smart_tracking</string>
+    <string name="title_smart_tracking">Smart tracking</string>
+    <string name="summary_smart_tracking">The app will only track your location when movement is detected</string>
 </resources>
