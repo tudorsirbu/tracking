@@ -21,6 +21,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,6 +37,8 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     private LocationManager manager;
     private GoogleMap mMap;
     private Marker userLocation;
+
+    private LatLng lastLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,8 +84,8 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
 
     @Override
     public void onSuccess(Location location) {
-        LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
-        moveUser(coordinates);
+        lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        moveUser(lastLocation);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -97,6 +100,18 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
         } else {
             userLocation.setPosition(location);
         }
+
+        drawPath(location);
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16f));
+    }
+
+    private void drawPath(LatLng newLocation) {
+        PolylineOptions options = new PolylineOptions();
+        options.add(lastLocation);
+        options.add(newLocation);
+        options.color(R.color.black);
+        lastLocation = newLocation;
+        mMap.addPolyline(options);
     }
 }
