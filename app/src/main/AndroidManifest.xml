@@ -23,7 +23,7 @@
             android:value="AIzaSyBdDI5m0AqsaL33vZbMZJvhgraroMl_Pk0" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".controllers.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme">
 

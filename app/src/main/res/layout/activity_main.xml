@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="uk.tudorsirbu.track.MainActivity">
+    tools:context="uk.tudorsirbu.track.controllers.MainActivity">
 
     <fragment
         android:id="@+id/fragment_container"
@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        class="uk.tudorsirbu.track.UserMapFragment"/>
+        class="uk.tudorsirbu.track.controllers.UserMapFragment"/>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

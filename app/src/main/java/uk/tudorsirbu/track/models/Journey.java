@@ -1,4 +1,4 @@
-package uk.tudorsirbu.track;
+package uk.tudorsirbu.track.models;
 
 import com.google.android.gms.maps.model.LatLng;
 

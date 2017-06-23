@@ -1,9 +1,11 @@
-package uk.tudorsirbu.track;
+package uk.tudorsirbu.track.controllers;
 
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
+
+import uk.tudorsirbu.track.R;
 
 public class SettingsFragment extends PreferenceFragment {
 

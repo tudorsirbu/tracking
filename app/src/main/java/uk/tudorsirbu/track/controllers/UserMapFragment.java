@@ -1,4 +1,4 @@
-package uk.tudorsirbu.track;
+package uk.tudorsirbu.track.controllers;
 
 
 import android.Manifest;
@@ -28,6 +28,10 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import uk.tudorsirbu.track.LocationManager;
+import uk.tudorsirbu.track.R;
+import uk.tudorsirbu.track.models.Journey;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +43,7 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     private Marker userLocation;
 
     private LatLng lastLocation;
+    private Journey journey;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,6 +90,11 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     @Override
     public void onSuccess(Location location) {
         lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+        // create journey and set the start
+        journey = new Journey();
+        journey.addLocation(lastLocation);
+
         moveUser(lastLocation);
     }
 
@@ -102,6 +112,9 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
         }
 
         drawPath(location);
+
+        // add a new location to the journey
+        journey.addLocation(location);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16f));
     }

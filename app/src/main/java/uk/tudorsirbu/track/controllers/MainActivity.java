@@ -1,4 +1,4 @@
-package uk.tudorsirbu.track;
+package uk.tudorsirbu.track.controllers;
 
 import android.Manifest;
 import android.app.FragmentManager;
@@ -14,6 +14,8 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+
+import uk.tudorsirbu.track.R;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, PermissionListener {
 
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public void onPermissionGranted(PermissionGrantedResponse response) {
-        
+
     }
 
     @Override
