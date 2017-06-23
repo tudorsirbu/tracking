@@ -19,8 +19,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
@@ -30,6 +35,7 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
 
     private LocationManager manager;
     private GoogleMap mMap;
+    private Marker userLocation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,13 +53,15 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     @Override
     public void onResume() {
         super.onResume();
-//        manager.start();
+        EventBus.getDefault().register(this);
+        manager.start();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        manager.stop();
+        EventBus.getDefault().unregister(this);
+        manager.stop();
     }
 
     @Override
@@ -73,8 +81,22 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
 
     @Override
     public void onSuccess(Location location) {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(latLng).title("You are here"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f));
+        LatLng coordinates = new LatLng(location.getLatitude(), location.getLongitude());
+        moveUser(coordinates);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNewLocation(LocationManager.LocationEvent event) {
+        moveUser(event.getLocation());
+        Log.d("Tudor", "Received one more location!");
+    };
+
+    private void moveUser(LatLng location){
+        if(userLocation == null){
+            userLocation = mMap.addMarker(new MarkerOptions().position(location).title("You are here"));
+        } else {
+            userLocation.setPosition(location);
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16f));
     }
 }

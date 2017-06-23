@@ -3,7 +3,7 @@ package uk.tudorsirbu.track;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -11,12 +11,15 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by tudorsirbu on 23/06/2017.
@@ -75,6 +78,9 @@ public class LocationManager extends LocationCallback implements PermissionListe
         super.onLocationResult(locationResult);
 
         Log.d("Tudor", locationResult.getLastLocation().toString());
+
+        LocationEvent event = new LocationEvent(locationResult.getLastLocation());
+        EventBus.getDefault().post(event);
     }
 
     @SuppressLint("MissingPermission")
@@ -94,5 +100,16 @@ public class LocationManager extends LocationCallback implements PermissionListe
     public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
         Log.d("Tudor", "rationale");
 
+    }
+
+    public class LocationEvent {
+        private LatLng coordionates;
+        public LocationEvent(Location location) {
+            coordionates = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+
+        public LatLng getLocation(){
+            return coordionates;
+        }
     }
 }
