@@ -3,11 +3,8 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="title_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="pref_key_tracking">tracking</string>
     <string name="title_tracking">Background tracking</string>
     <string name="summary_tracking">The app will track your location in the background</string>
@@ -16,4 +13,9 @@
     <string name="summary_smart_tracking">The app will only track your location when movement is detected</string>
     <string name="started_tracking">Started tracking your location.</string>
     <string name="stopped_tracking">Stopped tracking your location.</string>
+    <string name="title_activity_journey_details">Map</string>
+
+    <string name="journey_start">Started on: %1$s </string>
+    <string name="journey_end">Ended on: %1$s </string>
+    <string name="ongoing">Ongoing</string>
 </resources>

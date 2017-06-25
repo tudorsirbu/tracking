@@ -30,8 +30,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.UUID;
-
 import uk.tudorsirbu.track.LocationManager;
 import uk.tudorsirbu.track.R;
 import uk.tudorsirbu.track.models.Journey;
@@ -52,6 +50,8 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
 
     private boolean locationTracking = false;
 
+    private JourneyDao mJourneyDao;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,6 +64,7 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
         fab.setOnClickListener(this);
 
         manager = new LocationManager(getActivity());
+        mJourneyDao = new JourneyDao(getContext());
 
         return view;
     }
@@ -147,6 +148,8 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
             case "start":
                 Snackbar.make(getView(), getString(R.string.started_tracking), Snackbar.LENGTH_LONG).show();
                 locationTracking = true;
+                journey = new Journey();
+                journey.start();
                 manager.start();
                 v.setTag("stop");
                 break;
@@ -157,8 +160,7 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
                 v.setTag("start");
 
                 journey.end();
-                JourneyDao journeyDao = new JourneyDao(UUID.randomUUID().toString());
-                journeyDao.save(journey);
+                mJourneyDao.save(journey);
                 break;
         }
     }

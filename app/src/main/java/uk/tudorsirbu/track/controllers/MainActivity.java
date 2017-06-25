@@ -1,10 +1,10 @@
 package uk.tudorsirbu.track.controllers;
 
 import android.Manifest;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -35,11 +35,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         switch (item.getItemId()) {
             case R.id.navigation_home:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new UserMapFragment())
+                        .commit();
                 return true;
             case R.id.navigation_dashboard:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new JourneysListFragment())
+                        .commit();
                 return true;
             case R.id.navigation_settings:
                 fragmentManager.beginTransaction()
