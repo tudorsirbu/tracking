@@ -2,13 +2,16 @@ package uk.tudorsirbu.track.controllers;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,19 +39,17 @@ import uk.tudorsirbu.track.models.Journey;
 import uk.tudorsirbu.track.models.JourneyDao;
 
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnSuccessListener<Location>, View.OnClickListener {
 
-    private LocationManager manager;
     private GoogleMap mMap;
     private Marker userLocation;
 
     private LatLng lastLocation;
     private Journey journey;
-
-    private boolean locationTracking = false;
 
     private JourneyDao mJourneyDao;
 
@@ -63,7 +64,6 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
-        manager = new LocationManager(getActivity());
         mJourneyDao = new JourneyDao(getContext());
 
         return view;
@@ -73,24 +73,32 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     public void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
-
-        if(locationTracking)
-            manager.start();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);
-        manager.stop();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         getLocation();
+        requestBackgroundJourney();
     }
 
+    /**
+     * Requests the current tracked journey from the Location service
+     */
+    private void requestBackgroundJourney(){
+        if(LocationManager.isRunning(getActivity()))
+            EventBus.getDefault().post(new LocationManager.JourneyRequestEvent());
+    }
+
+    /**
+     * Gets the user's current location as a one off
+     */
     private void getLocation() {
         FusedLocationProviderClient client =
                 LocationServices.getFusedLocationProviderClient(getActivity());
@@ -103,33 +111,36 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     @Override
     public void onSuccess(Location location) {
         lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
-        // create journey and set the start
-        journey = new Journey();
-        journey.addLocation(lastLocation);
-
-        moveUser(lastLocation);
+        moveUser(lastLocation, true);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onNewLocation(LocationManager.LocationEvent event) {
-        moveUser(event.getLocation());
-        Log.d("Tudor", "Received one more location!");
+        if(journey == null) {
+            // restore journey
+            journey = event.getJourney();
+            for(uk.tudorsirbu.track.models.Location location : journey.getLocations()){
+                LatLng latLng = location.getLatLng();
+                drawPath(latLng);
+                moveUser(latLng, false);
+            }
+        } else {
+            moveUser(event.getLocation(), false);
+            drawPath(event.getLocation());
+        }
     };
 
-    private void moveUser(LatLng location){
+    private void moveUser(LatLng location, boolean zoom){
         if(userLocation == null){
             userLocation = mMap.addMarker(new MarkerOptions().position(location).title("You are here"));
         } else {
             userLocation.setPosition(location);
         }
 
-        drawPath(location);
-
-        // add a new location to the journey
-        journey.addLocation(location);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 16f));
+        if(zoom)
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,17.5f));
+        else
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 
     private void drawPath(LatLng newLocation) {
@@ -143,25 +154,42 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
 
     @Override
     public void onClick(View v) {
+        Drawable drawable;
         String action = (String) v.getTag();
         switch(action){
             case "start":
-                Snackbar.make(getView(), getString(R.string.started_tracking), Snackbar.LENGTH_LONG).show();
-                locationTracking = true;
+                drawable = ContextCompat.getDrawable(getActivity(), R.drawable.ic_stop_black_24dp);
+                ((FloatingActionButton) v).setImageDrawable(drawable);
+
+                Snackbar.make(v, getString(R.string.started_tracking), Snackbar.LENGTH_LONG).show();
                 journey = new Journey();
                 journey.start();
-                manager.start();
+                toggleLocation(true);
                 v.setTag("stop");
                 break;
             case "stop":
-                Snackbar.make(getView(), getString(R.string.stopped_tracking), Snackbar.LENGTH_LONG).show();
-                locationTracking = false;
-                manager.stop();
+                drawable = ContextCompat.getDrawable(getActivity(), R.drawable.ic_add_location_black_24dp);
+                ((FloatingActionButton) v).setImageDrawable(drawable);
+
+                Snackbar.make(v, getString(R.string.stopped_tracking), Snackbar.LENGTH_LONG).show();
+                toggleLocation(false);
                 v.setTag("start");
 
                 journey.end();
                 mJourneyDao.save(journey);
                 break;
         }
+    }
+
+    /**
+     * Toggles the location services
+     * @param start true = start / false = stop
+     */
+    private void toggleLocation(boolean start){
+        Intent intent = new Intent(getActivity(), LocationManager.class);
+        if(start) {
+            getActivity().startService(intent);
+        } else
+            getActivity().stopService(intent);
     }
 }

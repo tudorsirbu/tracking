@@ -62,13 +62,17 @@ public class Journey implements Parcelable {
         mLocations.add(new Location(latLng.latitude, latLng.longitude));
     }
 
+    public void addLocation(android.location.Location location){
+        addLocation(new LatLng(location.getLatitude(), location.getLongitude()));
+    }
+
     public void start(){
+        mId = UUID.randomUUID().toString();
         mStart = System.currentTimeMillis();
     }
 
     public void end(){
         mEnd = System.currentTimeMillis();
-        mId = UUID.randomUUID().toString();
     }
 
 

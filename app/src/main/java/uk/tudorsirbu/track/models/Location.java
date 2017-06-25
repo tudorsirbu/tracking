@@ -3,28 +3,30 @@ package uk.tudorsirbu.track.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by tudorsirbu on 25/06/2017.
  */
 public class Location implements Parcelable {
 
-    private double latitute;
+    private double latitude;
     private double longitude;
 
     public Location() {
     }
 
-    public Location(double latitute, double longitude) {
-        this.latitute = latitute;
+    public Location(double latitude, double longitude) {
+        this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public double getLatitute() {
-        return latitute;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setLatitute(double latitute) {
-        this.latitute = latitute;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public double getLongitude() {
@@ -35,8 +37,12 @@ public class Location implements Parcelable {
         this.longitude = longitude;
     }
 
+    public LatLng getLatLng(){
+        return new LatLng(latitude, longitude);
+    }
+
     protected Location(Parcel in) {
-        latitute = in.readDouble();
+        latitude = in.readDouble();
         longitude = in.readDouble();
     }
 
@@ -47,7 +53,7 @@ public class Location implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(latitute);
+        dest.writeDouble(latitude);
         dest.writeDouble(longitude);
     }
 
