@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "647977806010",
+    "firebase_url": "https://floowinterview.firebaseio.com",
+    "project_id": "floowinterview",
+    "storage_bucket": "floowinterview.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647977806010:android:c20e6df1685812ba",
+        "android_client_info": {
+          "package_name": "uk.tudorsirbu.track"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647977806010-cm3jeaoeis8fv5toepag4bb7k1go6dbs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uk.tudorsirbu.track",
+            "certificate_hash": "3bd0f6006f121f146d74ea98b9553724be4a7717"
+          }
+        },
+        {
+          "client_id": "647977806010-03781p8k5pt5tpr3j5ffohgo5e6v5sp5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpuyO9m6qu4JGAm6l5G2eEHDMQnBTAqSw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647977806010-03781p8k5pt5tpr3j5ffohgo5e6v5sp5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

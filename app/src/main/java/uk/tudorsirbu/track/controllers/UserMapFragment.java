@@ -5,6 +5,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,15 +30,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.UUID;
+
 import uk.tudorsirbu.track.LocationManager;
 import uk.tudorsirbu.track.R;
 import uk.tudorsirbu.track.models.Journey;
+import uk.tudorsirbu.track.models.JourneyDao;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnSuccessListener<Location> {
+public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnSuccessListener<Location>, View.OnClickListener {
 
     private LocationManager manager;
     private GoogleMap mMap;
@@ -45,6 +50,8 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     private LatLng lastLocation;
     private Journey journey;
 
+    private boolean locationTracking = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +59,9 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
 
         MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
 
         manager = new LocationManager(getActivity());
 
@@ -62,7 +72,9 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     public void onResume() {
         super.onResume();
         EventBus.getDefault().register(this);
-        manager.start();
+
+        if(locationTracking)
+            manager.start();
     }
 
     @Override
@@ -126,5 +138,28 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
         options.color(R.color.black);
         lastLocation = newLocation;
         mMap.addPolyline(options);
+    }
+
+    @Override
+    public void onClick(View v) {
+        String action = (String) v.getTag();
+        switch(action){
+            case "start":
+                Snackbar.make(getView(), getString(R.string.started_tracking), Snackbar.LENGTH_LONG).show();
+                locationTracking = true;
+                manager.start();
+                v.setTag("stop");
+                break;
+            case "stop":
+                Snackbar.make(getView(), getString(R.string.stopped_tracking), Snackbar.LENGTH_LONG).show();
+                locationTracking = false;
+                manager.stop();
+                v.setTag("start");
+
+                journey.end();
+                JourneyDao journeyDao = new JourneyDao(UUID.randomUUID().toString());
+                journeyDao.save(journey);
+                break;
+        }
     }
 }

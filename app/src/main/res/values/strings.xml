@@ -14,4 +14,6 @@
     <string name="pref_key_smart_tracking">smart_tracking</string>
     <string name="title_smart_tracking">Smart tracking</string>
     <string name="summary_smart_tracking">The app will only track your location when movement is detected</string>
+    <string name="started_tracking">Started tracking your location.</string>
+    <string name="stopped_tracking">Stopped tracking your location.</string>
 </resources>

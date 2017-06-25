@@ -23,6 +23,22 @@ public class Journey {
         mLocations = new ArrayList<LatLng>();
     }
 
+    public String getId() {
+        return mId;
+    }
+
+    public long getStart() {
+        return mStart;
+    }
+
+    public long getEnd() {
+        return mEnd;
+    }
+
+    public ArrayList<LatLng> getLocations() {
+        return mLocations;
+    }
+
     public void addLocation(LatLng latLng){
         mLocations.add(latLng);
     }
