@@ -39,16 +39,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 fragmentManager.beginTransaction()
+                        .remove(fragmentManager.findFragmentById(R.id.fragment_container))
                         .replace(R.id.fragment_container, new UserMapFragment())
                         .commit();
                 return true;
             case R.id.navigation_dashboard:
                 fragmentManager.beginTransaction()
+                        .remove(fragmentManager.findFragmentById(R.id.fragment_container))
                         .replace(R.id.fragment_container, new JourneysListFragment())
                         .commit();
                 return true;
             case R.id.navigation_settings:
                 fragmentManager.beginTransaction()
+                        .remove(fragmentManager.findFragmentById(R.id.fragment_container))
                         .replace(R.id.fragment_container, new SettingsFragment())
                         .commit();
                 return true;

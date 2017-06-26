@@ -2,7 +2,7 @@ package uk.tudorsirbu.track.controllers;
 
 
 import android.Manifest;
-import android.content.Intent;
+import android.app.FragmentManager;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -85,6 +85,20 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
 //            toggleLocation(false);
 
         super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        FragmentManager fragmentManager = getActivity().getFragmentManager();
+
+        android.app.Fragment fragment = fragmentManager.findFragmentById(R.id.map);
+        if (fragment != null){
+            fragmentManager.beginTransaction()
+                    .remove(fragment)
+                    .commit();
+        }
     }
 
     @Override
