@@ -108,6 +108,18 @@ public class LocationManager extends Service  {
     }
 
     /**
+     * Toggles the location services
+     * @param start true = start / false = stop
+     */
+    public static void toggleLocation(Context context, boolean start){
+        Intent intent = new Intent(context, LocationManager.class);
+        if(start) {
+            context.startService(intent);
+        } else
+            context.stopService(intent);
+    }
+
+    /**
      * Helper class used by the service to send new locations
      * to activities through EventBus
      */
@@ -116,7 +128,8 @@ public class LocationManager extends Service  {
         private Journey mJourney;
         public LocationEvent(Location location, Journey journey) {
             mJourney = journey;
-            mCoordinates = new LatLng(location.getLatitude(), location.getLongitude());
+            if(location != null)
+                mCoordinates = new LatLng(location.getLatitude(), location.getLongitude());
         }
 
         public Journey getJourney() {

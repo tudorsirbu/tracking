@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="@string/pref_key_tracking"
         android:title="@string/title_tracking"
         android:summary="@string/summary_tracking"
         android:defaultValue="false" />
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
         android:key="@string/pref_key_smart_tracking"
         android:title="@string/title_smart_tracking"
         android:summary="@string/summary_smart_tracking"

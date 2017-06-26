@@ -52,16 +52,18 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     private Journey journey;
 
     private JourneyDao mJourneyDao;
+    private FloatingActionButton fab;
+    private MapFragment mapFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        MapFragment mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (MapFragment) getActivity().getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
         mJourneyDao = new JourneyDao(getContext());
@@ -77,8 +79,12 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
 
     @Override
     public void onPause() {
-        super.onPause();
         EventBus.getDefault().unregister(this);
+        // todo if background = false, stop service
+//        if()
+//            toggleLocation(false);
+
+        super.onPause();
     }
 
     @Override
@@ -92,8 +98,13 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
      * Requests the current tracked journey from the Location service
      */
     private void requestBackgroundJourney(){
-        if(LocationManager.isRunning(getActivity()))
+        if(LocationManager.isRunning(getActivity())) {
             EventBus.getDefault().post(new LocationManager.JourneyRequestEvent());
+
+            Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.ic_stop_black_24dp);
+            fab.setImageDrawable(drawable);
+            fab.setTag("stop");
+        }
     }
 
     /**
@@ -144,12 +155,14 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     }
 
     private void drawPath(LatLng newLocation) {
-        PolylineOptions options = new PolylineOptions();
-        options.add(lastLocation);
-        options.add(newLocation);
-        options.color(R.color.black);
+        if(lastLocation != null){
+            PolylineOptions options = new PolylineOptions();
+            options.add(lastLocation);
+            options.add(newLocation);
+            options.color(R.color.black);
+            mMap.addPolyline(options);
+        }
         lastLocation = newLocation;
-        mMap.addPolyline(options);
     }
 
     @Override
@@ -164,7 +177,7 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
                 Snackbar.make(v, getString(R.string.started_tracking), Snackbar.LENGTH_LONG).show();
                 journey = new Journey();
                 journey.start();
-                toggleLocation(true);
+                LocationManager.toggleLocation(getActivity(), true);
                 v.setTag("stop");
                 break;
             case "stop":
@@ -172,7 +185,7 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
                 ((FloatingActionButton) v).setImageDrawable(drawable);
 
                 Snackbar.make(v, getString(R.string.stopped_tracking), Snackbar.LENGTH_LONG).show();
-                toggleLocation(false);
+                LocationManager.toggleLocation(getActivity(), false);
                 v.setTag("start");
 
                 journey.end();
@@ -181,15 +194,5 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
         }
     }
 
-    /**
-     * Toggles the location services
-     * @param start true = start / false = stop
-     */
-    private void toggleLocation(boolean start){
-        Intent intent = new Intent(getActivity(), LocationManager.class);
-        if(start) {
-            getActivity().startService(intent);
-        } else
-            getActivity().stopService(intent);
-    }
+
 }
