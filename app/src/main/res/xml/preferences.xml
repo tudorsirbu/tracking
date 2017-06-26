@@ -6,11 +6,4 @@
         android:title="@string/title_tracking"
         android:summary="@string/summary_tracking"
         android:defaultValue="false" />
-
-    <SwitchPreferenceCompat
-        android:key="@string/pref_key_smart_tracking"
-        android:title="@string/title_smart_tracking"
-        android:summary="@string/summary_smart_tracking"
-        android:defaultValue="false" />
-
 </PreferenceScreen>

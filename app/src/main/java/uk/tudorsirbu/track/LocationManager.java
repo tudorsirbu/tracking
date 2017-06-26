@@ -68,11 +68,7 @@ public class LocationManager extends Service  {
         mLocationRequest.setFastestInterval(5000);
 
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,null);
-
-//        if(inBackground)
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-//        else
-//            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
 
     @Override

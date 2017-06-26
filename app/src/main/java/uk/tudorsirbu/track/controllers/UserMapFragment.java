@@ -12,7 +12,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,6 @@ import uk.tudorsirbu.track.LocationManager;
 import uk.tudorsirbu.track.R;
 import uk.tudorsirbu.track.models.Journey;
 import uk.tudorsirbu.track.models.JourneyDao;
-
 
 
 /**
@@ -80,10 +78,6 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     @Override
     public void onPause() {
         EventBus.getDefault().unregister(this);
-        // todo if background = false, stop service
-//        if()
-//            toggleLocation(false);
-
         super.onPause();
     }
 

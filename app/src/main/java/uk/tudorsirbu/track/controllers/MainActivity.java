@@ -1,6 +1,8 @@
 package uk.tudorsirbu.track.controllers;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,7 +17,10 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import uk.tudorsirbu.track.LocationManager;
 import uk.tudorsirbu.track.R;
+
+import static uk.tudorsirbu.track.util.Constants.PREFS_NAME;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, PermissionListener {
 
@@ -57,6 +62,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // switch off location tracking when app is not in foreground if background tracking is
+        // disabled
+        SharedPreferences mSharedPrefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean backgroundEnabled = mSharedPrefs.getBoolean(getString(R.string.pref_key_tracking), false);
+        if(!backgroundEnabled)
+            LocationManager.toggleLocation(this, false);
     }
 
     @Override
