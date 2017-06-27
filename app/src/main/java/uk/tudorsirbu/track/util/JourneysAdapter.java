@@ -56,7 +56,7 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.Journe
 
         public void bind(Journey journey){
             mJourney = journey;
-            mTitle.setText(journey.getId());
+            mTitle.setText(TimeHelper.millisToString(journey.getStart()));
         }
 
         @Override

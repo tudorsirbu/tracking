@@ -3,6 +3,7 @@ package uk.tudorsirbu.track.controllers;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
@@ -12,14 +13,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import uk.tudorsirbu.track.R;
 import uk.tudorsirbu.track.models.Journey;
+import uk.tudorsirbu.track.models.Location;
 
 import static uk.tudorsirbu.track.util.Constants.JOURNEY_INTENT_KEY;
+import static uk.tudorsirbu.track.util.TimeHelper.millisToString;
 
 public class JourneyDetailsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -63,34 +68,27 @@ public class JourneyDetailsActivity extends FragmentActivity implements OnMapRea
         journeyEnd.setText(getString(R.string.journey_end, millisToString(mJourney.getEnd())));
     }
 
+    private void showPath(){
+        PolylineOptions options = new PolylineOptions();
+        List<Location> locations = mJourney.getLocations();
+        for(Location location : locations){
+            Log.d("Tudor", "adding point on map...");
+            options.add(location.getLatLng());
+        }
+        options.color(R.color.black);
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+        LatLng start = locations.get(0).getLatLng();
+        LatLng end = locations.get(locations.size() - 1).getLatLng();
+        mMap.addMarker(new MarkerOptions().position(start).title("Start"));
+        mMap.addMarker(new MarkerOptions().position(end).title("End"));
+
+        mMap.addPolyline(options);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start, 17.5f));
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    }
-
-    private String millisToString(long millis){
-        if(millis <= 0)
-            return getString(R.string.ongoing);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(millis);
-
-        SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-        return format.format(calendar.getTime());
+        showPath();
     }
 }
