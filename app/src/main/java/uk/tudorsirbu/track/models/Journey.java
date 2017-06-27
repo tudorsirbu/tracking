@@ -2,6 +2,7 @@ package uk.tudorsirbu.track.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
  * Created by tudorsirbu on 23/06/2017.
  */
 
-public class Journey implements Parcelable {
+public class Journey implements Parcelable, Comparable<Journey> {
 
     private String mId;
     private long mStart;
@@ -119,4 +120,13 @@ public class Journey implements Parcelable {
             return new Journey[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull Journey j) {
+        if(j.getStart() > getStart())
+            return 1;
+        else if(j.getStart() < getStart())
+            return -1;
+        return 0;
+    }
 }

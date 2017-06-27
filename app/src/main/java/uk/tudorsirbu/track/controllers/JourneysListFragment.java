@@ -2,6 +2,7 @@ package uk.tudorsirbu.track.controllers;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class JourneysListFragment extends Fragment implements ValueEventListener
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         journeysList = (RecyclerView) view.findViewById(R.id.journeys_list);
+        journeysList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         journeysList.setLayoutManager(linearLayoutManager);
 
         return view;

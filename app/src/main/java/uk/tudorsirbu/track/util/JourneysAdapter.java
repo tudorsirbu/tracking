@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import uk.tudorsirbu.track.controllers.JourneyDetailsActivity;
@@ -24,6 +25,7 @@ public class JourneysAdapter extends RecyclerView.Adapter<JourneysAdapter.Journe
     List<Journey> mJourneys;
 
     public JourneysAdapter(List<Journey> mJourneys) {
+        Collections.sort(mJourneys);
         this.mJourneys = mJourneys;
     }
 
