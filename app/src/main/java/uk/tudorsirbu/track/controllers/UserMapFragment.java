@@ -74,11 +74,13 @@ public class UserMapFragment extends Fragment implements OnMapReadyCallback, OnS
     @Override
     public void onResume() {
         super.onResume();
+        fab.setVisibility(View.VISIBLE);
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onPause() {
+        fab.setVisibility(View.INVISIBLE);
         EventBus.getDefault().unregister(this);
         super.onPause();
     }
