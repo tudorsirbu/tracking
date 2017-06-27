@@ -80,13 +80,13 @@ public class JourneysListFragment extends Fragment implements ValueEventListener
 
     private void showJourneys(){
         if(journeys.size()  <= 0){
-            journeysList.setVisibility(View.INVISIBLE);
+            journeysList.setVisibility(View.GONE);
             noJourneysDescription.setVisibility(View.VISIBLE);
         } else {
             JourneysAdapter adapter = new JourneysAdapter(journeys);
             journeysList.setAdapter(adapter);
+            noJourneysDescription.setVisibility(View.GONE);
             journeysList.setVisibility(View.VISIBLE);
-            noJourneysDescription.setVisibility(View.INVISIBLE);
         }
     }
 }
