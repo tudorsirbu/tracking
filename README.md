@@ -10,6 +10,8 @@ the next video shows the app while tracking the user when the app is not in the 
 
 https://youtu.be/ccd3HnIf_Gc
 
+**Tasks marked in bold have been completed. A short description has also been provided for the tasks which could not be completed due to time restrictions.**
+
 Primary Goals:
 
 -	**Build an app that can display the user’s current location on a map**
@@ -27,9 +29,13 @@ Bonus Goals:
 
 -	**Allow the user to see each journey’s path plotted on a map, when selected from the list.**
 -	Show any other interesting data you can think of relating to a journey, when selected from the list.
+  - e.g. the speed returned by the location API or activity type (car, walking, bike) using the activity detection API
 -	Secure the data that’s stored on the device.
 
 Optional
 -	**Retain the user’s data if the app is deleted and re-installed.**
 -	Detect the user’s motion, and automatically determine when to turn tracking “on” or “off”, in a way that conserves battery power.
+  - This can be achieved by acting based on detected user activity. If the user starts moving then the location tracking and be switched on and immediately off after they've stopped moving. 
+  - Another way to trigger location tracking is when the user has connected their device to a charger or when they are connected to a bluetooth device that could be their car. (or a combination of both)
+  - Geofences could also be setup to determine when the user has left a specific range. This could be useful if the user is moving within a larger building which might not have great GPS reception.
 
