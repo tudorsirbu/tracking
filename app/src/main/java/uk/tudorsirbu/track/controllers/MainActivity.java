@@ -2,11 +2,13 @@ package uk.tudorsirbu.track.controllers;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -87,6 +89,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.permission_required);
+        builder.setMessage(R.string.permission_desc);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Dexter.withActivity(MainActivity.this)
+                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        .withListener(MainActivity.this)
+                        .check();
+            }
+        });
+        builder.show();
     }
 }
