@@ -1,4 +1,4 @@
-# floow-interview
+# Tracking app
 
 The app should run out of the box. It has been developed using the latest version of Android 3.0. 
 
