@@ -18,4 +18,5 @@
     <string name="journey_start">Started on: %1$s </string>
     <string name="journey_end">Ended on: %1$s </string>
     <string name="ongoing">Ongoing</string>
+    <string name="no_journeys">No journeys. \nPress the pink button to start.</string>
 </resources>

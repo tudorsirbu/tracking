@@ -5,7 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/no_journeys_desc"
+        android:text="@string/no_journeys"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <android.support.v7.widget.RecyclerView
+        android:visibility="invisible"
         android:id="@+id/journeys_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

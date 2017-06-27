@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +32,7 @@ public class JourneysListFragment extends Fragment implements ValueEventListener
     private List<Journey> journeys;
     private RecyclerView journeysList;
     private JourneyDao dao;
+    private TextView noJourneysDescription;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +40,8 @@ public class JourneysListFragment extends Fragment implements ValueEventListener
         View view = inflater.inflate(R.layout.fragment_journeys_list, container, false);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        noJourneysDescription = (TextView) view.findViewById(R.id.no_journeys_desc);
 
         journeysList = (RecyclerView) view.findViewById(R.id.journeys_list);
         journeysList.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
@@ -61,7 +65,6 @@ public class JourneysListFragment extends Fragment implements ValueEventListener
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        Log.d("Tudor", "received some journeys");
         journeys = new ArrayList<Journey>();
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             Journey journey = ds.getValue(Journey.class);
@@ -76,7 +79,14 @@ public class JourneysListFragment extends Fragment implements ValueEventListener
     }
 
     private void showJourneys(){
-        JourneysAdapter adapter = new JourneysAdapter(journeys);
-        journeysList.setAdapter(adapter);
+        if(journeys.size()  <= 0){
+            journeysList.setVisibility(View.INVISIBLE);
+            noJourneysDescription.setVisibility(View.VISIBLE);
+        } else {
+            JourneysAdapter adapter = new JourneysAdapter(journeys);
+            journeysList.setAdapter(adapter);
+            journeysList.setVisibility(View.VISIBLE);
+            noJourneysDescription.setVisibility(View.INVISIBLE);
+        }
     }
 }
