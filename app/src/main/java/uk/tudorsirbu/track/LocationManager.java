@@ -64,11 +64,11 @@ public class LocationManager extends Service  {
         mLocationCallback = new NewLocationCallback();
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000); // todo make these constants
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setInterval(5000); // todo make these constants
+        mLocationRequest.setFastestInterval(3000);
 
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,null);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     @Override
