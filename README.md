@@ -4,11 +4,11 @@ The app should run out of the box. It has been developed using the latest versio
 
 At the following link a video demonstration of the realtime tracking while the app is in the foreground is available: 
 
- https://youtu.be/y0dmm6cN78g 
+https://drive.google.com/file/d/0B8NdlOz7Hoc0RFNkZ0lBMTRSenc/view?usp=sharing
 
 the next video shows the app while tracking the user when the app is not in the background, along with restoring the journey path when the app is brought back to the foreground:
 
-https://youtu.be/ccd3HnIf_Gc
+https://drive.google.com/open?id=0B8NdlOz7Hoc0czBmNGd0RTV0aW8
 
 **Tasks marked in bold have been completed. A short description has also been provided for the tasks which could not be completed due to time restrictions.**
 
