@@ -17,7 +17,7 @@ Primary Goals:
 -	**In response to a “tracking on/off” UI switch, record or do not record the user’s movements.**
 -	**Display a path over the map as the user moves.**
 -	**If a journey is defined as a set of recorded locations between a tracking on and a tracking off switch, retain the user’s journeys.**
--	**Allow the user to see all their journeys in a list. **
+-	**Allow the user to see all their journeys in a list.**
 -	**Allow the user to see the start and end times of their journeys when they select them from the list.**
 -	**The app should record the user’s location in the background if the user selects “tracking on” and backgrounds the app.**
 -	**The app should not use the battery if the user selects “tracking off” and backgrounds the app.**
