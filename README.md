@@ -35,7 +35,7 @@ Bonus Goals:
 Optional
 -	**Retain the user’s data if the app is deleted and re-installed.**
 -	Detect the user’s motion, and automatically determine when to turn tracking “on” or “off”, in a way that conserves battery power.
-  - This can be achieved by acting based on detected user activity. If the user starts moving then the location tracking and be switched on and immediately off after they've stopped moving. 
-  - Another way to trigger location tracking is when the user has connected their device to a charger or when they are connected to a bluetooth device that could be their car. (or a combination of both)
-  - Geofences could also be setup to determine when the user has left a specific range. This could be useful if the user is moving within a larger building which might not have great GPS reception.
+  ..- This can be achieved by acting based on detected user activity. If the user starts moving then the location tracking and be switched on and immediately off after they've stopped moving. 
+  ..- Another way to trigger location tracking is when the user has connected their device to a charger or when they are connected to a bluetooth device that could be their car. (or a combination of both)
+  ..- Geofences could also be setup to determine when the user has left a specific range. This could be useful if the user is moving within a larger building which might not have great GPS reception.
 
