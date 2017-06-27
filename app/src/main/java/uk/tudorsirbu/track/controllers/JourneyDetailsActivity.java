@@ -71,19 +71,20 @@ public class JourneyDetailsActivity extends FragmentActivity implements OnMapRea
     private void showPath(){
         PolylineOptions options = new PolylineOptions();
         List<Location> locations = mJourney.getLocations();
-        for(Location location : locations){
-            Log.d("Tudor", "adding point on map...");
-            options.add(location.getLatLng());
+        if(locations != null) {
+            for (Location location : locations) {
+                options.add(location.getLatLng());
+            }
+            options.color(R.color.black);
+
+            LatLng start = locations.get(0).getLatLng();
+            LatLng end = locations.get(locations.size() - 1).getLatLng();
+            mMap.addMarker(new MarkerOptions().position(start).title("Start"));
+            mMap.addMarker(new MarkerOptions().position(end).title("End"));
+
+            mMap.addPolyline(options);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start, 17.5f));
         }
-        options.color(R.color.black);
-
-        LatLng start = locations.get(0).getLatLng();
-        LatLng end = locations.get(locations.size() - 1).getLatLng();
-        mMap.addMarker(new MarkerOptions().position(start).title("Start"));
-        mMap.addMarker(new MarkerOptions().position(end).title("End"));
-
-        mMap.addPolyline(options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start, 17.5f));
     }
 
     @Override
